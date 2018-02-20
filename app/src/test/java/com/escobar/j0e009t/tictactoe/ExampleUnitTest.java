@@ -17,6 +17,7 @@ public class ExampleUnitTest {
     String Letter_X = "X";
     String Letter_O = "O";
 
+
     MainActivity mainActivity = new MainActivity();
 
     @Test
@@ -27,26 +28,66 @@ public class ExampleUnitTest {
 
     @Test
     public void checkTrueHorizontals(){
-        Assert.assertTrue(checkFirst3TrueHorizontals());
+        String[] firstRow = createUsedSpots(new int[] {0, 1, 2});
+        String[] secondRow = createUsedSpots(new int[] {3, 4, 5});
+        String[] thirdRow = createUsedSpots(new int[] {6, 7, 8});
 
+        Assert.assertTrue("First horizontal row failed", check3TrueHorizontals(firstRow));
+        Assert.assertTrue("Second horizontal row failed", check3TrueHorizontals(secondRow));
+        Assert.assertTrue("Third horizontal row failed", check3TrueHorizontals(thirdRow));
     }
 
-    public boolean checkFirst3TrueHorizontals(){
-        String[] usedSpots = {Letter_X, Letter_X, Letter_X, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
-        mainActivity.setUsedSpots(usedSpots);
-        return mainActivity.checkHorizontals(Letter_X);
+    @Test
+    public void checkFalseHorizontals(){
+        String[] oCompletedLine = {Letter_X, Letter_X, Letter_O, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
+        String[] empty = {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
+        String[] wrongLetter = {Letter_O, Letter_O, Letter_O, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
 
-        int i;
-        for(i=0; i<8; i=i+3){
-            usedSpots[i] = EMPTY;
-            usedSpots[i+1] = EMPTY;
-            usedSpots[i+2] = EMPTY;
+        Assert.assertFalse("oCompletedLine was supposed to fail", check3TrueHorizontals(oCompletedLine));
+        Assert.assertFalse("empty was supposed to fail", check3TrueHorizontals(empty));
+        Assert.assertFalse("wrongLetter was supposed to fail", check3TrueHorizontals(wrongLetter));
+    }
+
+    @Test
+    public void checkTrueVerticals(){
+
+
+        String[] firstRow = createUsedSpots(new int[] {0, 3, 6});
+        String[] secondRow = createUsedSpots(new int[] {1, 4, 7});
+        String[] thirdRow = createUsedSpots(new int[] {2, 5, 8});
+
+        Assert.assertTrue("First vertical row failed", check3TrueVerticals(firstRow));
+        Assert.assertTrue("Second vertical row failed", check3TrueVerticals(secondRow));
+        Assert.assertTrue("Third vertical row failed", check3TrueVerticals(thirdRow));
+    }
+
+    @Test
+    public void checkFalseVerticals(){
+        String[] oCompletedLine = {Letter_X, EMPTY, EMPTY, Letter_X, EMPTY, EMPTY, Letter_O, EMPTY, EMPTY};
+        String[] empty = {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
+        String[] wrongLetter = {Letter_O, EMPTY, EMPTY, Letter_O, EMPTY, EMPTY, Letter_O, EMPTY, EMPTY};
+
+        Assert.assertFalse("oCompletedLine was supposed to fail", check3TrueVerticals(oCompletedLine));
+        Assert.assertFalse("empty was supposed to fail", check3TrueVerticals(empty));
+        Assert.assertFalse("wrongLetter was supposed to fail", check3TrueVerticals(wrongLetter));
+    }
+
+    public String[] createUsedSpots(int[] index){
+        String[] usedSpots = {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
+        for(int i: index){
+            usedSpots[i] = Letter_X;
         }
+        return usedSpots;
     }
 
     public boolean check3TrueHorizontals(String[] usedSpots){
-        String[] usedSpots = {EMPTY, EMPTY, EMPTY, Letter_X, Letter_X, Letter_X, EMPTY, EMPTY, EMPTY};
         mainActivity.setUsedSpots(usedSpots);
         return mainActivity.checkHorizontals(Letter_X);
     }
+
+    public boolean check3TrueVerticals(String[] usedSpots){
+        mainActivity.setUsedSpots(usedSpots);
+        return mainActivity.checkVerticals(Letter_X);
+    }
+
 }

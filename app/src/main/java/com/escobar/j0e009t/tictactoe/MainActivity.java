@@ -22,47 +22,57 @@ public class MainActivity extends AppCompatActivity {
         this.usedSpots = usedSpots;
     }
 
-    private boolean checkHorizontals(){
-        boolean isOver;
-        isOver = checkHorizontals(Letter_X);
-        if(isOver == false){
-            isOver = checkHorizontals(Letter_O);
+    public boolean checkFor3InRow(String direction){
+        boolean isOver=false;
+
+        switch(direction){
+            case "horizontal" :
+                isOver = checkTraditionLines(7, 1, 3);
+                break;
+            case "vertical" :
+                isOver = checkTraditionLines(3, 3, 1);
+                break;
+            case "backward" :
+                isOver = checkDiagonalLines(0, 8);
+                break;
+            case "forward" :
+                isOver = checkDiagonalLines(6, 2);
+                break;
         }
         return isOver;
     }
 
-    public boolean checkHorizontals(String letter){
-        int i;
+    public boolean checkTraditionLines(int innerLoopMax, int checkIncrementer, int finalIncrementer) {
+        int i = 0;
+        int j = 0;
         boolean threeInRow = false;
+        String letter = Letter_X;
 
-        for (i=0; i<7; i = i + 3){
-            if(usedSpots[i].equals(letter) && usedSpots[i+1].equals(letter) && usedSpots[i+2].equals(letter)){
-                threeInRow = true;
+        while (j<2 && threeInRow == false){
+            while (i < innerLoopMax && threeInRow == false) {
+                if (usedSpots[i].equals(letter) && usedSpots[i + checkIncrementer].equals(letter) && usedSpots[i + (2 *checkIncrementer)].equals(letter)) {
+                    threeInRow = true;
+                }
+                i = i + finalIncrementer;
             }
+            letter = Letter_O;
+            j++;
         }
-
         return threeInRow;
     }
 
-    private boolean checkVerticals(){
-        boolean isOver;
-        isOver = checkVerticals(Letter_X);
-        if(isOver == false){
-            isOver = checkVerticals(Letter_O);
-        }
-        return isOver;
-    }
-
-    private boolean checkVerticals(String letter){
-        int i;
+    public boolean checkDiagonalLines(int first, int last){
         boolean threeInRow = false;
+        int i = 0;
+        String letter = Letter_X;
 
-        for (i=0; i<3; i = i + 1){
-            if(usedSpots[i].equals(letter) && usedSpots[i+3].equals(letter) && usedSpots[i+3].equals(letter)){
+        while (i<2 && threeInRow == false) {
+            if (usedSpots[first].equals(letter) && usedSpots[4].equals(letter) && usedSpots[last].equals(letter)) {
                 threeInRow = true;
             }
+            letter = Letter_O;
+            i++;
         }
-
         return threeInRow;
     }
 
@@ -91,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(someoneWon()){
                 Toast.makeText(this, "Game Over", Toast.LENGTH_SHORT).show();
-                resetGame();
+                //resetGame();
             }
 
         }
@@ -104,10 +114,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean someoneWon(){
         boolean gameOver = false;
 
-        gameOver = checkHorizontals();
-        if(gameOver != true){
-            gameOver = checkVerticals();
-        }
+//        gameOver = checkHorizontals();
+//        if(gameOver != true){
+//            gameOver = checkVerticals();
+//        }
 
         return  gameOver;
     }

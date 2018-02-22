@@ -74,7 +74,7 @@ public class ExampleUnitTest {
 
     @Test
     public void checkTrueForwardDiagonal(){
-        String[] forwardDiagonal = {EMPTY, EMPTY, Letter_X, EMPTY, Letter_X, EMPTY, Letter_X, EMPTY, EMPTY};
+        String[] forwardDiagonal = {Letter_O, Letter_O, Letter_X, Letter_O, Letter_X, EMPTY, Letter_X, EMPTY, EMPTY};
 
         Assert.assertTrue(check3InRow(forwardDiagonal, "forward"));
     }
@@ -89,7 +89,7 @@ public class ExampleUnitTest {
     public String[] createUsedSpots(int[] index){
         String[] usedSpots = {EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY};
         for(int i: index){
-            usedSpots[i] = Letter_X;
+            usedSpots[i] = Letter_O;
         }
         return usedSpots;
     }
